@@ -40,7 +40,7 @@ namespace DisableSpells
             Spells.Add(new SpellStruct
             {
                 ChampionName = "Nidalee",
-                AvailableSpell = SpellSlot.E
+                AvailableSpell = SpellSlot.R
             });
 
             Spells.Add(new SpellStruct
