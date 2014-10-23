@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -119,6 +119,7 @@ namespace DisableSpells
              */
 
             Config = new Menu("Exploit", "Exploit", true);
+
             Config.AddSubMenu(new Menu("Disable", "Disable"));
             foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => !hero.IsMe))
             {
@@ -126,7 +127,9 @@ namespace DisableSpells
                     .AddItem(
                         new MenuItem(hero.ChampionName, "Disable on " + hero.ChampionName).SetValue(false));
                 Config.Item(hero.ChampionName).SetValue(false);
+
             }
+
             Config.AddToMainMenu();
 
             Game.PrintChat("Exploit loaded!");
@@ -146,7 +149,13 @@ namespace DisableSpells
                         select hero)
                     {
                         Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(hero.NetworkId, spell.AvailableSpell)).Send();
-                    }   
+                    }
+
+
+                    foreach (var turret in ObjectManager.Get<Obj_AI_Turret>().Where(t => t.Team != ObjectManager.Player.Team && t.IsVisible))
+                    {
+                        Packet.C2S.Cast.Encoded(new Packet.C2S.Cast.Struct(turret.NetworkId, spell.AvailableSpell)).Send();
+                    }
                 }
             }
         }
